@@ -8,3 +8,16 @@ contiguous blob.  With each color change, the top-left blob "absorbs" adjacent
 blobs of that color.  The objective is to fill the board with one color.
 """
 
+from Tkinter import *
+
+def main():
+    master = Tk()
+
+    w = Canvas(master, width=400, height=400)
+    w.pack()
+
+    mainloop()
+
+if __name__=='__main__':
+    main()
+
