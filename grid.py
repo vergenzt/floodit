@@ -59,3 +59,10 @@ class Blob(object):
         self.positions |= other.positions
         self.neighbors |= other.neighbors
 
+    def __hash__(self):
+        h = 0
+        h ^= hash(self.color)
+        h ^= hash(frozenset(self.positions))
+        h ^= hash(frozenset(self.neighbors))
+        return h
+
