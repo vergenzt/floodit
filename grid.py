@@ -40,6 +40,7 @@ class FloodGrid(object):
                     blob = Blob(color, (i,j))
                     grid[i].append(blob)
 
+        self.by_position = grid
         self.root = grid[0][0]
 
 
