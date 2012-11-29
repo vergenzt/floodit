@@ -38,6 +38,10 @@ class FloodGrid(object):
                     grid[i].append(up)
                 else:
                     blob = Blob(color, (i,j))
+                    for n in (up,left):
+                        if n:
+                            blob.neighbors.add(n)
+                            n.neighbors.add(blob)
                     grid[i].append(blob)
 
         self.by_position = grid
