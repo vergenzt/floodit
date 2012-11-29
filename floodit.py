@@ -10,14 +10,11 @@ blobs of that color.  The objective is to fill the board with one color.
 
 from Tkinter import *
 
-def main():
-    master = Tk()
-
-    w = Canvas(master, width=400, height=400)
-    w.pack()
-
-    mainloop()
+class Application(Frame):
+    pass
 
 if __name__=='__main__':
-    main()
+    root = Tk()
+    app = Application(master=root)
+    app.mainloop()
 
