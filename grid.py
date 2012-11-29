@@ -25,7 +25,7 @@ class FloodGrid(object):
                 left,up = None,None
                 if j > 0: left = grid[i][j-1]
                 if i > 0: up = grid[i-1][j]
-                if (j>0 and i>0) and color == left.color == up.color:
+                if (j>0 and i>0) and color == left.color == up.color and left != up:
                     left.positions.add((i,j))
                     left.merge(up)
                     grid[i-1][j] = left
