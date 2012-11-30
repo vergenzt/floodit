@@ -75,6 +75,14 @@ class Blob(object):
         self.positions = set()
         self.positions.add(pos)
 
+    def change_color(self, color):
+        """Set the color for this blob.  Merge all same-colored neighbors."""
+        assert color != self.color
+        self.color = color
+        for blob in self.neighbors.copy():
+            if blob.color == color:
+                self.merge(blob)
+
     def merge(self, other):
         """Merge other blob into this blob."""
         assert self.color == other.color

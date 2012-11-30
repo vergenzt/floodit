@@ -109,25 +109,6 @@ class Application(Tk):
         for b in self.buttons:
             b.config(state = NORMAL)
 
-    def set_color(self, color):
-        """
-        Set the color for the top-left blob.  Called by the UI buttons.
-        """
-        root = self.grid.root
-        root.color = color
-        # set the canvas rectangle colors
-        for (i,j) in root.positions:
-            self.canvas.itemconfig(self.rects[i][j], fill=color)
-        # merge same-color neighbors into the root
-        for blob in root.neighbors.copy():
-            if blob.color == color:
-                if self.args.debug:
-                    for (i,j) in blob.positions:
-                        self.canvas.itemconfig(self.indices[i][j], text=str(root.index))
-                root.merge(blob)
-        self.turns_taken.set(self.turns_taken.get() + 1)
-        print "Turn %d: %s" % (self.turns_taken.get(), color)
-
 
 if __name__=='__main__':
     app = Application(None)
