@@ -29,13 +29,15 @@ class Application(Tk):
         side = min(cellw, cellh)
 
         # create the rectangles on the canvas
-        self.rects = [[None]*self.grid.width]*self.grid.height
+        self.rects = []
         for i in xrange(self.grid.height):
+            self.rects.append([])
             for j in xrange(self.grid.width):
-                self.rects[i][j] = self.canvas.create_rectangle(
+                r = self.canvas.create_rectangle(
                     j*side, i*side, (j+1)*side, (i+1)*side,
                     fill=self.grid.by_position[i][j].color
                 )
+                self.rects[-1].append(r)
 
         # create the control buttons
         for i,color in enumerate(FloodGrid.COLORS):
