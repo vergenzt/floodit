@@ -49,7 +49,12 @@ class Application(Tk):
                     j*side, i*side, (j+1)*side, (i+1)*side,
                     fill=self.grid.by_position[i][j].color
                 )
-                self.rects[-1].append(r)
+                t = self.canvas.create_text(
+                    j*side, i*side,
+                    anchor='nw',
+                    text=str(self.grid.by_position[i][j].index)
+                )
+                self.rects[-1].append((r,t))
 
         # create the control buttons
         self.buttons = []
@@ -87,10 +92,12 @@ class Application(Tk):
         root.color = color
         # set the canvas rectangle colors
         for (i,j) in root.positions:
-            self.canvas.itemconfig(self.rects[i][j], fill=color)
+            self.canvas.itemconfig(self.rects[i][j][0], fill=color)
         # merge same-color neighbors into the root
         for blob in root.neighbors.copy():
             if blob.color == color:
+                for (i,j) in blob.positions:
+                    self.canvas.itemconfig(self.rects[i][j][1], text=str(root.index))
                 root.merge(blob)
 
 

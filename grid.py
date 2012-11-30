@@ -50,8 +50,11 @@ class FloodGrid(object):
 
 class Blob(object):
     """A contiguous blob of colors within a FloodGrid."""
+    INDEX = 0
 
     def __init__(self, color, pos):
+        self.index = Blob.INDEX
+        Blob.INDEX += 1
         self.color = color
         self.neighbors = set()
         self.positions = set()
