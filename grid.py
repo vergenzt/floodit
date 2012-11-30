@@ -23,36 +23,39 @@ class FloodGrid(object):
 
         grid = []
         for i in xrange(height):
-            grid.append([])
+
+            # create a random row
+            row = []
             for j in xrange(width):
                 color = random.choice(self.COLORS)
-                left,up = None,None
-                if j > 0: left = grid[i][j-1]
-                if i > 0: up = grid[i-1][j]
-                if (j>0 and i>0) and color == left.color == up.color and left != up:
-                    left.positions.add((i,j))
-                    left.merge(up)
-                    grid[i-1][j] = left
-                    grid[i].append(left)
-                elif (j>0) and color == left.color:
-                    left.positions.add((i,j))
-                    grid[i].append(left)
-                    if up:
-                        up.neighbors.add(left)
-                        left.neighbors.add(up)
-                elif (i>0) and color == up.color:
-                    up.positions.add((i,j))
-                    grid[i].append(up)
-                    if left:
-                        up.neighbors.add(left)
-                        left.neighbors.add(up)
+                if j == 0:
+                    b = Blob(color, (i,j))
+                    row.append(b)
                 else:
-                    blob = Blob(color, (i,j))
-                    for n in (up,left):
-                        if n:
-                            blob.neighbors.add(n)
-                            n.neighbors.add(blob)
-                    grid[i].append(blob)
+                    left = row[j-1]
+                    if color == left.color:
+                        left.positions.add((i,j))
+                        row.append(left)
+                    else:
+                        b = Blob(color, (i,j))
+                        left.neighbors.add(b)
+                        b.neighbors.add(left)
+                        row.append(b)
+
+            # fuse it to the previous rows
+            grid.append(row)
+            if i != 0:
+                for j in xrange(width):
+                    up   = grid[-2][j]
+                    down = grid[-1][j]
+                    if up.color == down.color:
+                        if up.index != down.index:
+                            up.merge(down)
+                            for (i,j) in down.positions:
+                                grid[i][j] = up
+                    else:
+                        up.neighbors.add(down)
+                        down.neighbors.add(up)
 
         self.by_position = grid
         self.root = grid[0][0]
