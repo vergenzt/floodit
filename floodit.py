@@ -116,6 +116,7 @@ class Application(Tk):
                         self.canvas.itemconfig(self.indices[i][j], text=str(root.index))
                 root.merge(blob)
         self.turns_taken.set(self.turns_taken.get() + 1)
+        print "Turn %d: %s" % (self.turns_taken.get(), color)
 
 
 if __name__=='__main__':
