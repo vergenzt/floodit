@@ -11,36 +11,57 @@ blobs of that color.  The objective is to fill the board with one color.
 from Tkinter import *
 from grid import *
 
-class Application(Frame):
-    def __init__(self, master=None):
-        Frame.__init__(self, master)
-        self.initialize_grid()
-        self.pack()
+class Application(Tk):
+    def __init__(self, parent):
+        Tk.__init__(self, parent)
+        self.initialize()
 
+    def initialize(self):
+        self.grid()
+        self.resizable(False, False)
 
-    def initialize_grid(self):
-        self.canvas = Canvas(self)
-        self.canvas.pack()
+        self.canvas = Canvas(self, width=300, height=300)
+        self.canvas.grid(column=0, row=0, columnspan=8, padx=5, pady=5)
 
-        grid = FloodGrid()
-        cellw = int(self.canvas['width']) / grid.width
-        cellh = int(self.canvas['height']) / grid.height
+        self.grid = FloodGrid()
+        cellw = int(self.canvas['width']) / self.grid.width
+        cellh = int(self.canvas['height']) / self.grid.height
         side = min(cellw, cellh)
 
-        self.rects = [[None]*grid.width]*grid.height
-        for i in xrange(grid.height):
-            for j in xrange(grid.width):
+        # create the rectangles on the canvas
+        self.rects = [[None]*self.grid.width]*self.grid.height
+        for i in xrange(self.grid.height):
+            for j in xrange(self.grid.width):
                 self.rects[i][j] = self.canvas.create_rectangle(
                     j*side, i*side, (j+1)*side, (i+1)*side,
-                    fill=grid.by_position[i][j].color,
-                    outline=''
+                    fill=self.grid.by_position[i][j].color
                 )
 
-        self.grid = grid
+        # create the control buttons
+        for i,color in enumerate(FloodGrid.COLORS):
+            b = Button(self,
+                bg = color, activebackground = color,
+                borderwidth = 4,
+                command = lambda c=color: self.set_color(c)
+            )
+            b.grid(column=i+1, row=1, pady=5, sticky='S')
+
+        # align the grid columns and rows
+        self.grid_columnconfigure(0, weight=1)
+        for i in range(1,8):
+            self.grid_columnconfigure(i+1, weight=0)
+        self.grid_columnconfigure(7, weight=1)
+        self.grid_rowconfigure(1, pad=10)
+
+    def set_color(self, color):
+        """
+        Set the color for the top-left blob.  Called by the UI buttons.
+        """
+        print color
 
 
 if __name__=='__main__':
-    root = Tk()
-    app = Application(master=root)
+    app = Application(None)
+    app.title('Flood-It!')
     app.mainloop()
 
