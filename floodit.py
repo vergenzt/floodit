@@ -51,6 +51,7 @@ class Application(Tk):
                 self.rects[-1].append(r)
 
         # create the control buttons
+        self.buttons = []
         for i,color in enumerate(FloodGrid.COLORS):
             b = Button(self,
                 bg = color, activebackground = color,
@@ -58,6 +59,7 @@ class Application(Tk):
                 command = lambda c=color: self.set_color(c)
             )
             b.grid(column=i+1, row=1, pady=5, sticky='S')
+            self.buttons.append(b)
 
         # align the grid columns and rows
         self.grid_columnconfigure(0, weight=1)
