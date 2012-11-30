@@ -11,6 +11,8 @@ blobs of that color.  The objective is to fill the board with one color.
 from Tkinter import *
 from grid import *
 
+import sys
+
 class Application(Tk):
     def __init__(self, parent):
         Tk.__init__(self, parent)
@@ -23,7 +25,16 @@ class Application(Tk):
         self.canvas = Canvas(self, width=300, height=300)
         self.canvas.grid(column=0, row=0, columnspan=8, padx=5, pady=5)
 
-        self.grid = FloodGrid()
+        seed = None
+        try:
+            if sys.argv[1]=='--seed':
+                seed = int(sys.argv[2])
+        except ValueError:
+            print "Invalid seed!"
+            sys.exit(1)
+        except IndexError: pass
+
+        self.grid = FloodGrid(seed=seed)
         cellw = int(self.canvas['width']) / self.grid.width
         cellh = int(self.canvas['height']) / self.grid.height
         side = min(cellw, cellh)
