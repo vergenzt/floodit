@@ -5,6 +5,7 @@ This file defines classes used for the Flood-it grid.
 """
 
 import random
+import sys
 
 class FloodGrid(object):
     """A grid of colors."""
@@ -16,7 +17,7 @@ class FloodGrid(object):
         self.width = width
         self.height = height
         if not seed:
-            seed = random.randint(0, 65535)
+            seed = random.randint(0, sys.maxint)
         print "Using random seed %d" % seed
         random.seed(seed)
 
