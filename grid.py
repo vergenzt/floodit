@@ -15,6 +15,9 @@ class FloodGrid(object):
         """Initialize a random grid of colors."""
         self.width = width
         self.height = height
+        if not seed:
+            seed = random.randint(0, 65535)
+            print "Using random seed %d" % seed
         random.seed(seed)
 
         grid = []
