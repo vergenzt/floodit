@@ -67,6 +67,14 @@ class Blob(object):
     INDEX = 0
     "A global Blob index counter."
 
+    position_changed = None
+    """
+    A function to call when a grid position changes color.
+
+    The callback should accept two arguments, a 2-tuple (i,j) for the position
+    that changed, and a blob object for the blob that now occupies that spot.
+    """
+
     def __init__(self, color, pos):
         self.index = Blob.INDEX
         Blob.INDEX += 1
@@ -82,6 +90,9 @@ class Blob(object):
         for blob in self.neighbors.copy():
             if blob.color == color:
                 self.merge(blob)
+        # call the callback
+        for pos in self.positions:
+            Blob.position_changed(pos, self)
 
     def merge(self, other):
         """Merge other blob into this blob."""
