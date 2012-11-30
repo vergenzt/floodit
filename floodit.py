@@ -114,6 +114,8 @@ class Application(Tk):
         """Callback for the UI color buttons."""
         try:
             self.grid.change_color(color)
+            self.turns_taken.set(self.turns_taken.get() + 1)
+            print "Turn %d: %s" % (self.turns_taken.get(), color)
         except AssertionError: pass
 
     def position_changed(self, (i,j), blob):
