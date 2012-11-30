@@ -33,9 +33,15 @@ class FloodGrid(object):
                 elif (j>0) and color == left.color:
                     left.positions.add((i,j))
                     grid[i].append(left)
+                    if up:
+                        up.neighbors.add(left)
+                        left.neighbors.add(up)
                 elif (i>0) and color == up.color:
                     up.positions.add((i,j))
                     grid[i].append(up)
+                    if left:
+                        up.neighbors.add(left)
+                        left.neighbors.add(up)
                 else:
                     blob = Blob(color, (i,j))
                     for n in (up,left):
