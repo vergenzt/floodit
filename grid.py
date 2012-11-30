@@ -60,6 +60,10 @@ class FloodGrid(object):
         self.by_position = grid
         self.root = grid[0][0]
 
+    def change_color(self, color):
+        """Change the color for this FloodGrid's root node."""
+        self.root.change_color(color)
+
 
 class Blob(object):
     """A contiguous blob of colors within a FloodGrid."""
@@ -91,8 +95,9 @@ class Blob(object):
             if blob.color == color:
                 self.merge(blob)
         # call the callback
-        for pos in self.positions:
-            Blob.position_changed(pos, self)
+        if Blob.position_changed:
+            for pos in self.positions:
+                Blob.position_changed(pos, self)
 
     def merge(self, other):
         """Merge other blob into this blob."""

@@ -73,6 +73,7 @@ class Application(Tk):
                         text=str(self.grid.by_position[i][j].index)
                     )
                     self.indices[-1].append(t)
+        Blob.position_changed = self.position_changed
 
         # create the turns label
         self.turns_taken = IntVar()
@@ -87,7 +88,7 @@ class Application(Tk):
             b = Button(self,
                 bg = color, activebackground = color,
                 borderwidth = 4,
-                command = lambda c=color: self.set_color(c),
+                command = lambda c=color: self.press_button(c),
                 state = DISABLED
             )
             b.grid(column=i+1, row=1, pady=5, sticky='S')
@@ -108,6 +109,18 @@ class Application(Tk):
                     self.set_color(line)
         for b in self.buttons:
             b.config(state = NORMAL)
+
+    def press_button(self, color):
+        """Callback for the UI color buttons."""
+        try:
+            self.grid.change_color(color)
+        except AssertionError: pass
+
+    def position_changed(self, (i,j), blob):
+        """Callback for blob color changes."""
+        self.canvas.itemconfig(self.rects[i][j], fill=blob.color)
+        if self.args.debug:
+            self.canvas.itemconfig(self.indices[i][j], text=blob.index)
 
 
 if __name__=='__main__':
