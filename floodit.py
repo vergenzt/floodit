@@ -64,6 +64,13 @@ class Application(Tk):
                     )
                     self.indices[-1].append(t)
 
+        # create the turns label
+        self.turns_taken = IntVar()
+        label = Label(self,
+            textvariable=self.turns_taken
+        )
+        label.grid(column=0, row=1)
+
         # create the control buttons
         self.buttons = []
         for i,color in enumerate(FloodGrid.COLORS):
@@ -108,6 +115,7 @@ class Application(Tk):
                     for (i,j) in blob.positions:
                         self.canvas.itemconfig(self.indices[i][j], text=str(root.index))
                 root.merge(blob)
+        self.turns_taken.set(self.turns_taken.get() + 1)
 
 
 if __name__=='__main__':
