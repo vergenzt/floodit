@@ -103,12 +103,16 @@ class Application(Tk):
 
         # run initial colorations
         if self.args.stdin:
-            for line in sys.stdin:
-                line = line.strip()
-                if line in FloodGrid.COLORS:
-                    self.set_color(line)
+            self.read_from_stdin()
         for b in self.buttons:
             b.config(state = NORMAL)
+
+    def read_from_stdin(self):
+        """Read a color from stdin."""
+        for line in sys.stdin:
+            line = line.strip()
+            if line in FloodGrid.COLORS:
+                self.press_button(line)
 
     def press_button(self, color):
         """Callback for the UI color buttons."""
