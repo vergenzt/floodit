@@ -57,7 +57,15 @@ class Application(Tk):
         """
         Set the color for the top-left blob.  Called by the UI buttons.
         """
-        print color
+        root = self.grid.root
+        root.color = color
+        # set the canvas rectangle colors
+        for (i,j) in root.positions:
+            self.canvas.itemconfig(self.rects[i][j], fill=color)
+        # merge same-color neighbors into the root
+        for blob in root.neighbors.copy():
+            if blob.color == color:
+                root.merge(blob)
 
 
 if __name__=='__main__':
