@@ -22,6 +22,8 @@ class Application(Tk):
         parser = ArgumentParser()
         parser.add_argument('-s', '--seed', type=int,
                             help='specify random seed')
+        parser.add_argument('--stdin', action='store_true',
+                            help='take initial colors from stdin, 1 per line')
         self.args = parser.parse_args()
 
         self.initialize()
@@ -55,7 +57,8 @@ class Application(Tk):
             b = Button(self,
                 bg = color, activebackground = color,
                 borderwidth = 4,
-                command = lambda c=color: self.set_color(c)
+                command = lambda c=color: self.set_color(c),
+                state = DISABLED
             )
             b.grid(column=i+1, row=1, pady=5, sticky='S')
             self.buttons.append(b)
@@ -66,6 +69,14 @@ class Application(Tk):
             self.grid_columnconfigure(i+1, weight=0)
         self.grid_columnconfigure(7, weight=1)
         self.grid_rowconfigure(1, pad=10)
+
+        # run initial colorations
+        if self.args.stdin:
+            for line in sys.stdin:
+                if line in FloodGrid.COLORS:
+                    self.set_color(line)
+        for b in self.buttons:
+            b.config(state = NORMAL)
 
     def set_color(self, color):
         """
