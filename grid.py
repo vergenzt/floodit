@@ -17,7 +17,7 @@ class FloodGrid(object):
         self.height = height
         if not seed:
             seed = random.randint(0, 65535)
-            print "Using random seed %d" % seed
+        print "Using random seed %d" % seed
         random.seed(seed)
 
         grid = []
