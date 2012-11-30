@@ -12,10 +12,18 @@ from Tkinter import *
 from grid import *
 
 import sys
+from argparse import ArgumentParser
 
 class Application(Tk):
     def __init__(self, parent):
         Tk.__init__(self, parent)
+
+        # parse command line arguments
+        parser = ArgumentParser()
+        parser.add_argument('-s', '--seed', type=int,
+                            help='specify random seed')
+        self.args = parser.parse_args()
+
         self.initialize()
 
     def initialize(self):
@@ -25,16 +33,7 @@ class Application(Tk):
         self.canvas = Canvas(self, width=300, height=300)
         self.canvas.grid(column=0, row=0, columnspan=8, padx=5, pady=5)
 
-        seed = None
-        try:
-            if sys.argv[1]=='--seed':
-                seed = int(sys.argv[2])
-        except ValueError:
-            print "Invalid seed!"
-            sys.exit(1)
-        except IndexError: pass
-
-        self.grid = FloodGrid(seed=seed)
+        self.grid = FloodGrid(seed=self.args.seed)
         cellw = int(self.canvas['width']) / self.grid.width
         cellh = int(self.canvas['height']) / self.grid.height
         side = min(cellw, cellh)
