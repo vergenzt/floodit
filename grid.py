@@ -63,7 +63,9 @@ class FloodGrid(object):
 
 class Blob(object):
     """A contiguous blob of colors within a FloodGrid."""
+
     INDEX = 0
+    "A global Blob index counter."
 
     def __init__(self, color, pos):
         self.index = Blob.INDEX
@@ -74,7 +76,7 @@ class Blob(object):
         self.positions.add(pos)
 
     def merge(self, other):
-        """Merge Blob other into this Blob."""
+        """Merge other blob into this blob."""
         assert self.color == other.color
         self.positions |= other.positions
         self.neighbors |= other.neighbors
