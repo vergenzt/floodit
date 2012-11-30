@@ -73,6 +73,7 @@ class Application(Tk):
         # run initial colorations
         if self.args.stdin:
             for line in sys.stdin:
+                line = line.strip()
                 if line in FloodGrid.COLORS:
                     self.set_color(line)
         for b in self.buttons:
