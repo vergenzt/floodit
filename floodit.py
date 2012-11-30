@@ -19,7 +19,13 @@ class Application(Tk):
         Tk.__init__(self, parent)
 
         # parse command line arguments
-        parser = ArgumentParser()
+        parser = ArgumentParser(add_help=False)
+        parser.add_argument('--help', action='help',
+                            help='show this help message and exit')
+        parser.add_argument('-w', '--width', type=int, default=12,
+                            help='width of the grid')
+        parser.add_argument('-h', '--height', type=int, default=12,
+                            help='height of the grid')
         parser.add_argument('-s', '--seed', type=int,
                             help='specify random seed')
         parser.add_argument('--stdin', action='store_true',
@@ -37,7 +43,11 @@ class Application(Tk):
         self.canvas = Canvas(self, width=300, height=300)
         self.canvas.grid(column=0, row=0, columnspan=8, padx=5, pady=5)
 
-        self.grid = FloodGrid(seed=self.args.seed)
+        self.grid = FloodGrid(
+            width=self.args.width,
+            height=self.args.height,
+            seed=self.args.seed
+        )
         cellw = int(self.canvas['width']) / self.grid.width
         cellh = int(self.canvas['height']) / self.grid.height
         side = min(cellw, cellh)
