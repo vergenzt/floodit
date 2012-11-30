@@ -76,6 +76,14 @@ class Blob(object):
         self.positions |= other.positions
         self.neighbors |= other.neighbors
 
+    def __str__(self):
+        i = self.index
+        c = self.color
+        p = list(self.positions)
+        n = [neighbor.index for neighbor in self.neighbors]
+        s = '<grid.Blob%d (%s, p=%s, n=%s)>' % (i,c,p,n)
+        return s
+
     def __hash__(self):
         h = 0
         h ^= hash(self.color)
