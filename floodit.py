@@ -91,6 +91,7 @@ class Application(Tk):
                 command = lambda c=color: self.press_button(c),
                 state = DISABLED
             )
+            self.bind(str(i+1), lambda e,b=b: b.invoke())
             b.grid(column=i+1, row=1, pady=5, sticky='S')
             self.buttons.append(b)
 
